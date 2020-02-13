@@ -1,7 +1,7 @@
 var config = {
     baseBet: { value: 100, type: 'balance', label: 'Base bet' },
     nbrOfWinStreak: { value: 3, type: 'text', label: 'Win Streak to return to base bet' },
-    xAimed : { value: 2, type: 'text', label: 'Multiplier to aim' }
+    xAimed : { value: 2, type: 'multiplier', label: 'Multiplier to aim' }
 }
 
 //Reverse martingale by @Cannonball
