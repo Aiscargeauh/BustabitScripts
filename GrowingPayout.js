@@ -7,7 +7,7 @@ var config = {
 //Limit variable: Being able to set a maximum payout.
 //If reached, go back in reverse to minimize damage.
 
-var currentPayout = 2.15;
+var currentPayout = config.minimumPayout.value;
 var isBetting = false;
 var userProfit = 0;
 var isGoingUp = true;
