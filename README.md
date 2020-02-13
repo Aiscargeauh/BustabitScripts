@@ -29,3 +29,6 @@ This script makes charts like https://prnt.sc/r1u8jo.
 ### Growing Payout
 Here instead making the bet grow, we grow the payout.
 There is a minimum and maximum payout to input. If it goes until the maximum, the script is reversing the process to lower the damage.
+
+### AngryRabbitHole
+This is an idea. Not shure if could be worth it.
