@@ -68,7 +68,7 @@ engine.on('GAME_ENDED', function() {
 			if(loosingStreak == 9){
 				currentBetInSatoshis *= 2;
 			}
-			if(loosingStreak > 10 && loosingStreak % 5 == 0){
+			if(loosingStreak > 10 && (loosingStreak + 1) % 5 == 0){
 				currentBetInSatoshis *= 2;
 			}
 		}else if(gameInfos.cashedAt){
@@ -92,23 +92,20 @@ function CalculateBotSafeness(baseBetForBot, gamesToWaitForBot){
 	//Let's assume if we can handle 130 games, we're safe
 	//And let's simulate
 
-	let gamesToBeSafe = 130;
 	let totalGames = gamesToWaitForBot;
 	let brInSatoshis = userInfo.balance;
 	let bettedGames = 0;
 	let nextBet = baseBetForBot;
 	let broken = false;
-	let totalBet = 0;
 
 	while(!broken){
 		brInSatoshis -= nextBet;
 		totalGames++;
 		bettedGames++;
-		totalBet += nextBet;
 		if (bettedGames % 9 == 0 && bettedGames < 10) 
 		{
 			nextBet *= 2;
-		}else if(bettedGames % 5 == 0 && bettedGames > 10){
+		}else if((bettedGames + 1) % 5 == 0 && bettedGames > 10){
 			nextBet *= 2;
 		}
 		if(nextBet > brInSatoshis){
