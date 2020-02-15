@@ -92,19 +92,16 @@ function CalculateBotSafeness(baseBetForBot, gamesToWaitForBot){
 	//Let's assume if we can handle 130 games, we're safe
 	//And let's simulate
 
-	let gamesToBeSafe = 130;
 	let totalGames = gamesToWaitForBot;
 	let brInSatoshis = userInfo.balance;
 	let bettedGames = 0;
 	let nextBet = baseBetForBot;
 	let broken = false;
-	let totalBet = 0;
 
 	while(!broken){
 		brInSatoshis -= nextBet;
 		totalGames++;
 		bettedGames++;
-		totalBet += nextBet;
 		if (bettedGames % 9 == 0 && bettedGames < 10) 
 		{
 			nextBet *= 2;
