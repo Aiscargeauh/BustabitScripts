@@ -68,7 +68,7 @@ engine.on('GAME_ENDED', function() {
 			if(loosingStreak == 9){
 				currentBetInSatoshis *= 2;
 			}
-			if(loosingStreak > 10 && loosingStreak % 5 == 0){
+			if(loosingStreak > 10 && (loosingStreak + 1) % 5 == 0){
 				currentBetInSatoshis *= 2;
 			}
 		}else if(gameInfos.cashedAt){
@@ -108,7 +108,7 @@ function CalculateBotSafeness(baseBetForBot, gamesToWaitForBot){
 		if (bettedGames % 9 == 0 && bettedGames < 10) 
 		{
 			nextBet *= 2;
-		}else if(bettedGames % 5 == 0 && bettedGames > 10){
+		}else if((bettedGames + 1) % 5 == 0 && bettedGames > 10){
 			nextBet *= 2;
 		}
 		if(nextBet > brInSatoshis){
