@@ -39,7 +39,6 @@ engine.on('GAME_ENDED', function () {
                 }
             }
             userProfit -= config.baseBet.value;
-            log(currentPayout);
             log('Lost...');
         }else{
             //Won
