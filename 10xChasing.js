@@ -120,7 +120,7 @@ function GetGamesWithout10(){
 	let gamesArray = engine.history.toArray();
 	let generatedGamesWithout10 = 0;
 
-	for (var i = 0; i <= gamesArray.length; i++) {
+	for (var i = 0; i < gamesArray.length; i++) {
 		if(gamesArray[i].bust >= 10){
 			break;
 		}

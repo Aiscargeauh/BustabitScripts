@@ -2,15 +2,48 @@ var config = {
     baseBet: { value: 100, type: 'balance', label: 'Base Bet' },
 }
 
+//Add history generation https://gist.github.com/danielevns/adee44d3973865af9f22179564d22e7d
+//Would be great
+
+class GameObject{
+    constructor(id, hash, bust, cashedAt, wager){
+        this.id = id;
+        this.hash = hash;
+        this.bust = bust;
+        this.cashedAt = cashedAt;
+        this.wager = wager;
+    }
+}
+class TimedEvents{
+    startTime;
+    constructor(){
+        this.startTime = new Date();
+        log("Start time: " + this.startTime);
+        window.setInterval(this.TimeUpdate(this.startTime), 5 * 60000); //5 min
+    }
+    TimeUpdate(innerStartTime){
+        let preparedTime = ((Math.abs(new Date() - new Date(innerStartTime))) / 60000).toString().slice(0, currentMedian.toString().indexOf("."));
+        log("Script is running since " + preparedTime + " minutes now.");
+    }
+}
+
 let tenXCount = 0;
 let twoXCount = 0;
 let userProfit = 0;
 let loosingStreak = 0;
 let twoXChasingCount = 0;
 let tenXChasingCount = 0;
-let currentStrategy = "";
-let historyArrayLength = engine.history.toArray().length; //Should be 100, but is 50, dont know why
 let currentBet = config.baseBet.value;
+let currentStrategy = "";
+let currentHistory = engine.history.toArray();
+let historyArrayLength = currentHistory.length; //50 games but let's grow it
+let currentMedian = GetMedian(historyArrayLength);
+let gamesWithout2x = GetGamesWithout2();
+let gamesNeededFor2x = DetermineParametersTwoXChasing();
+let gamesWithout10x = GetGamesWithout10();
+let gamesNeededFor10x = DetermineParametersTenXChasing();
+let timedEventsClass = new TimedEvents();
+
 
 engine.on('GAME_STARTING', function () {
     log('');
@@ -28,16 +61,17 @@ engine.on('GAME_STARTING', function () {
 
 engine.on('GAME_ENDED', function () {
     let gameInfos = engine.history.first();
+    let newestGame = new GameObject(gameInfos.id, gameInfos.hash, gameInfos.bust, gameInfos.cashedAt, gameInfos.wager);
     if (currentStrategy == "") {
         ParseHistory();
         DetermineStrategy();
     } else if (currentStrategy == "2xChasing") {
-        if (!gameInfos.cashedAt) {
+        if (!newestGame.cashedAt) {
             log("Lost... Continue x2 chasing");
             userProfit = userProfit - currentBet;
             currentBet *= 2;
             loosingStreak++;
-        } else if (gameInfos.cashedAt) {
+        } else if (newestGame.cashedAt) {
             log("Won! Stopping x2 chasing");
             twoXChasingCount++;
             currentStrategy = "";
@@ -46,17 +80,17 @@ engine.on('GAME_ENDED', function () {
             currentBet = config.baseBet.value;
         }
     } else if (currentStrategy == "10xChasing") {
-        if (!gameInfos.cashedAt) {
+        if (!newestGame.cashedAt) {
             log("Lost... Continue x10 chasing");
             loosingStreak++;
             userProfit = userProfit - currentBet;
-            if(loosingStreak == 9){
-				currentBet *= 2;
-			}
-			if(loosingStreak > 10 && (loosingStreak + 1) % 5 == 0){
-				currentBet *= 2;
-			}
-        } else if (gameInfos.cashedAt) {
+            if (loosingStreak == 9) {
+                currentBet *= 2;
+            }
+            if (loosingStreak > 10 && (loosingStreak + 1) % 5 == 0) {
+                currentBet *= 2;
+            }
+        } else if (newestGame.cashedAt) {
             log("Won! Stopping x10 chasing");
             tenXChasingCount++;
             currentStrategy = "";
@@ -66,36 +100,40 @@ engine.on('GAME_ENDED', function () {
         }
     }
     log('Current profit using the script: ' + userProfit / 100 + ' bits. Got ' + twoXChasingCount + ' times 2x and ' + tenXChasingCount + ' times 10x.');
+    RefreshStats(newestGame);
     log('END GAME');
 });
 
-chat.on('message', function () {
+engine.on('MESSAGE', 'french', function () {
     log("received a message");
 });
 
+function RefreshStats(finishedGame) {
+    currentHistory.push(finishedGame);
+    historyArrayLength = currentHistory.length;
+    log("New history length: " + historyArrayLength + ".");
+    gamesWithout10x = GetGamesWithout10();
+    gamesNeededFor10x = DetermineParametersTenXChasing();
+    gamesWithout2x = GetGamesWithout2();
+    gamesNeededFor2x = DetermineParametersTwoXChasing();
+}
+
+//function placing bet
 function TenXChasing() {
-    log('Games since no 10x: ' + GetGamesWithout10() + '.');
+    log('Games since no 10x: ' + gamesWithout10x + '.');
     engine.bet(currentBet, 10);
 }
 
+//function placing bet
 function TwoXChasing() {
-    log('Games since no 2x: ' + GetGamesWithout2() + '.');
+    log('Games since no 2x: ' + gamesWithout2x + '.');
     engine.bet(currentBet, 2);
 }
 
 function DetermineStrategy() {
     if (currentStrategy == "") {
         ParseHistory();
-        let gamesWithout2x = GetGamesWithout2();
-        let gamesNeededFor2x = DetermineParametersTwoXChasing();
-        let gamesWithout10x = GetGamesWithout10();
-        let gamesNeededFor10x = DetermineParametersTenXChasing();
-        let currentMedian = GetMedian(historyArrayLength);
-
-        if (gamesWithout2x > gamesNeededFor2x //If we're safe to begin martingale 
-            || twoXCount < (historyArrayLength / 3) //If there is less than 1/3 that is green
-            || currentMedian < 1.6) { //If the median on 50 games is below  1.6
-
+        if (checkStat2x()) {
             //We're safe to use 2x Chasing
             currentStrategy = "2xChasing";
             log("2x Chasing starting next game!");
@@ -103,33 +141,59 @@ function DetermineStrategy() {
             if (gamesWithout2x < gamesNeededFor2x) {
                 log("Median is low enough to start 2x chasing");
             }
-        } else if (gamesWithout10x > gamesNeededFor10x //If we're safe to begin martingale
-            || tenXCount < (historyArrayLength / 13)) { //If there is less that 1/13 game that is 10x
-                if(gamesWithout10x < gamesNeededFor10x){
-                    log("10x is rare enough to start 10x chasing");
-                }
+        } else if (checkStat10x()) {
             //We're safe to use 10x Chasing
             currentStrategy = "10xChasing";
             log("10x Chasing starting next game!");
             log("It's been " + gamesWithout10x + " games without x10, we need " + gamesNeededFor10x + " games to be safe.");
-        } else {
-            currentStrategy = "";
         }
-        log("Median on " + historyArrayLength + " games is: " + currentMedian.toString().slice(0, (currentMedian.toString().indexOf(".") + 3)));
+    } else {
+        currentStrategy = "";
     }
+    log("Median on " + historyArrayLength + " games is: " + currentMedian.toString().slice(0, (currentMedian.toString().indexOf(".") + 3)));
 }
 
-function ParseHistory() {
-    let fullHistoryArray = engine.history.toArray();
+function checkStat2x() {
+    log("gamesWithout2x: " + gamesWithout2x);
+    if (gamesWithout2x > gamesNeededFor2x //If we're safe to begin martingale 
+        || currentMedian < 1.6) {
+        return true;
+    }
+    return false;
+}
 
-    fullHistoryArray.forEach(game => {
-        if (game.bust >= 10) {
-            tenXCount++;
-        }
-        if (game.bust >= 2) {
-            twoXCount++;
-        }
-    });
+function checkStat10x() {
+    log("gamesWithout10x: " + gamesWithout10x);
+    if (gamesWithout10x > gamesNeededFor10x) //If there is less that 1/13 game that is 10x
+    {
+        return true;
+    }
+    return false;
+}
+
+function ParseHistory(xLatestGames = undefined) {
+    tenXCount = 0;
+    twoXCount = 0;
+
+    if(xLatestGames != undefined){
+        currentHistory.slice(0, limit).forEach(game => {
+            if (game.bust >= 10) {
+                tenXCount++;
+            }
+            if (game.bust >= 2) {
+                twoXCount++;
+            }
+        });
+    }else{
+        currentHistory.forEach(game => {
+            if (game.bust >= 10) {
+                tenXCount++;
+            }
+            if (game.bust >= 2) {
+                twoXCount++;
+            }
+        });
+    }
 }
 
 function GetMedian(numberOfGames) {
@@ -208,7 +272,7 @@ function DetermineParametersTwoXChasing() {
 }
 
 function GetGamesWithout10() {
-    let gamesArray = engine.history.toArray();
+    let gamesArray = currentHistory;
     let generatedGamesWithout10 = 0;
 
     for (var i = 0; i <= gamesArray.length; i++) {
@@ -221,7 +285,7 @@ function GetGamesWithout10() {
 }
 
 function GetGamesWithout2() {
-    let gamesArray = engine.history.toArray();
+    let gamesArray = currentHistory;
     let generatedRedStreak = 0;
 
     for (var i = 0; i <= gamesArray.length; i++) {

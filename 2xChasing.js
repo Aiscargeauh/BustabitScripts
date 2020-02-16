@@ -106,7 +106,7 @@ function GetCurrentRedStreak() {
     let gamesArray = engine.history.toArray();
     let generatedRedStreak = 0;
 
-    for (var i = 0; i <= gamesArray.length; i++) {
+    for (var i = 0; i < gamesArray.length; i++) {
         if (gamesArray[i].bust >= 2) {
             break;
         }
