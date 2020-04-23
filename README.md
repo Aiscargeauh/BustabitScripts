@@ -41,3 +41,7 @@ Here instead making the bet grow, we grow the payout.
 There is a minimum and maximum payout to input. If it goes until the maximum, the script is reversing the process to lower the damage.
 
 Bustabit chart: https://prnt.sc/r2ust3.
+
+### OnTheMoon
+That's a custom made script. Basically a martingale, but with a lot of parameters.
+There is a nice interface for you to adjust your betting strategy.
