@@ -45,3 +45,4 @@ Bustabit chart: https://prnt.sc/r2ust3.
 ### OnTheMoon
 That's a custom made script. Basically a martingale, but with a lot of parameters.
 There is a nice interface for you to adjust your betting strategy.
+You can use it to chase any multiplier.
