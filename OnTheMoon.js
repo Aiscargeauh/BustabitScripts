@@ -29,7 +29,8 @@ if (multiplyOrAdd === "multiply") {
 } else if (multiplyOrAdd === "add") {
     var addValue = config.multiplyOrAdd.options.add.value;
 }
-var modifyBetEvery = config.modifyBetEvery.value;
+var modifyBetEvery = 0;
+config.modifyBetEvery.value == 0 ? modifyBetEvery = 1 : modifyBetEvery = config.modifyBetEvery.value;
 var maxBetOrMaxDeficit = config.maxBetOrMaxDeficit.value;
 if (maxBetOrMaxDeficit === "maxBet") {
     var maxBet = config.maxBetOrMaxDeficit.options.maxBet.value;
@@ -56,21 +57,22 @@ engine.on('GAME_STARTING', function () {
     log('Games without ' + multiplier + 'x: ' + gamesWithoutMultiplier + '.');
     log('Actual profit using the script: ' + userProfit / 100 + ' bits. Got ' + numberOfCashout + ' times ' + multiplier + 'x.');
     
-    if(gamesWithoutMultiplier > gamesToWait){
+    if(gamesWithoutMultiplier >= gamesToWait){
         //Do place the bet
-        engine.bet(baseBet, multiplier);
+        let tempBaseBet = ((baseBet / 100).toFixed()) * 100;
+        engine.bet(tempBaseBet, multiplier);
         isBetting = true;
-        let currentBetInBits = baseBet / 100;
+        let currentBetInBits = tempBaseBet / 100;
 		let wantedProfit = (currentBetInBits * (multiplier - 1)) + (userProfit / 100);
 		log('Betting ' + currentBetInBits + ' right now, looking for ' + wantedProfit + ' bits total profit.')
     }else{
         //Not betting yet, inform user
         isBetting = false;
 		let calculatedGamesToWait = gamesToWait - gamesWithoutMultiplier;
-		if(calculatedGamesToWait == 0){
-			log('Betting ' + baseBet/100 + 'bit(s) next game!');
+		if(calculatedGamesToWait == 1){
+			log('Betting ' + ((baseBet / 100).toFixed()) + 'bit(s) next game!');
 		}else{
-			log('Waiting for ' + calculatedGamesToWait + ' more games with no 10x');
+			log('Waiting for ' + calculatedGamesToWait + ' more games with no ' + multiplier + 'x');
 		}
     }
     
@@ -83,7 +85,7 @@ engine.on('GAME_ENDED', function () {
             log('Lost...');
             
             //Update variables
-            userProfit -= baseBet;
+            userProfit -= ((baseBet / 100).toFixed() * 100);
             bettedGames++;
 
             //If it's time to change baseBet
@@ -107,7 +109,7 @@ engine.on('GAME_ENDED', function () {
             //Won
             log('Won! Returning to base bet');
             //Reset variables, add this cashout to profit
-            userProfit += (baseBet * multiplier) - baseBet;
+            userProfit += (((baseBet / 100).toFixed() * 100) * multiplier) - ((baseBet / 100).toFixed() * 100);
             baseBet = config.baseBet.value;
             bettedGames = 0;
             numberOfCashout++;
