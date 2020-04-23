@@ -40,7 +40,7 @@ if (maxBetOrMaxDeficit === "maxBet") {
 //Internal vars
 var isBetting = false;
 var userProfit = 0;
-var gamesWithoutMultiplier = GetGamesWithoutX(multiplier); //+1 is to start to 1 instead of 0
+var gamesWithoutMultiplier = GetGamesWithoutX(multiplier);
 var bettedGames = 0;
 var numberOfCashout = 0;
 
