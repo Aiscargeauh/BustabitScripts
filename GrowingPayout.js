@@ -36,6 +36,7 @@ engine.on('GAME_ENDED', function () {
                 if(currentPayout <= config.minimumPayout.value && !isGoingUp){
                     log("Now going up.");
                     isGoingUp = true;
+                    currentPayout = config.minimumPayout.value;
                 }
             }
             userProfit -= config.baseBet.value;
