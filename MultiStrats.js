@@ -44,7 +44,7 @@ let gamesWithout2x = GetGamesWithout2();
 let gamesNeededFor2x = DetermineParametersTwoXChasing();
 let gamesWithout10x = GetGamesWithout10();
 let gamesNeededFor10x = DetermineParametersTenXChasing();
-let timedEventsClass = new TimedEvents();
+//let timedEventsClass = new TimedEvents();
 
 
 engine.on('GAME_STARTING', function () {
