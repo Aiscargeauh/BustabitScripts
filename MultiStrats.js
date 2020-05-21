@@ -14,18 +14,20 @@ class GameObject{
         this.wager = wager;
     }
 }
-class TimedEvents{
-    startTime;
-    constructor(){
-        this.startTime = new Date();
-        log("Start time: " + this.startTime);
-        window.setInterval(this.TimeUpdate(this.startTime), 5 * 60000); //5 min
-    }
-    TimeUpdate(innerStartTime){
-        let preparedTime = ((Math.abs(new Date() - new Date(innerStartTime))) / 60000).toString().slice(0, currentMedian.toString().indexOf("."));
-        log("Script is running since " + preparedTime + " minutes now.");
-    }
-}
+
+//not working yet
+// class TimedEvents{
+//     startTime;
+//     constructor(){
+//         this.startTime = new Date();
+//         log("Start time: " + this.startTime);
+//         window.setInterval(this.TimeUpdate(this.startTime), 5 * 60000); //5 min
+//     }
+//     TimeUpdate(innerStartTime){
+//         let preparedTime = ((Math.abs(new Date() - new Date(innerStartTime))) / 60000).toString().slice(0, currentMedian.toString().indexOf("."));
+//         log("Script is running since " + preparedTime + " minutes now.");
+//     }
+// }
 
 let tenXCount = 0;
 let twoXCount = 0;
@@ -55,7 +57,7 @@ engine.on('GAME_STARTING', function () {
         log("10x Chasing starting!");
         TenXChasing();
     } else {
-        log("No strategy choosen, sit back and relax");
+        log("No strategy choosen, sit back and relax.");
     }
 });
 
@@ -111,7 +113,9 @@ engine.on('MESSAGE', 'french', function () {
 function RefreshStats(finishedGame) {
     currentHistory.push(finishedGame);
     historyArrayLength = currentHistory.length;
-    log("New history length: " + historyArrayLength + ".");
+    if(historyArrayLength % 10 == 0){
+        log("History length: " + historyArrayLength + ".");
+    }
     gamesWithout10x = GetGamesWithout10();
     gamesNeededFor10x = DetermineParametersTenXChasing();
     gamesWithout2x = GetGamesWithout2();
@@ -150,20 +154,21 @@ function DetermineStrategy() {
     } else {
         currentStrategy = "";
     }
-    log("Median on " + historyArrayLength + " games is: " + currentMedian.toString().slice(0, (currentMedian.toString().indexOf(".") + 3)));
+    log("Median on " + historyArrayLength + " games is: " + currentMedian.toString().slice(0, (currentMedian.toString().indexOf(".") + 3)) + ".");
 }
 
 function checkStat2x() {
-    log("gamesWithout2x: " + gamesWithout2x);
+    log("Games without 2x: " + gamesWithout2x + ". Betting when no 2x since: " + gamesNeededFor2x + ".");
     if (gamesWithout2x > gamesNeededFor2x //If we're safe to begin martingale 
-        || currentMedian < 1.6) {
+        //|| currentMedian < 1.6
+        ) {
         return true;
     }
     return false;
 }
 
 function checkStat10x() {
-    log("gamesWithout10x: " + gamesWithout10x);
+    log("gamesWithout10x: " + gamesWithout10x + ". Betting when no 10x since: " + gamesNeededFor10x + ".");
     if (gamesWithout10x > gamesNeededFor10x) //If there is less that 1/13 game that is 10x
     {
         return true;
