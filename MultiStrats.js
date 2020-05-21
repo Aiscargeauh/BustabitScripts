@@ -158,7 +158,7 @@ function DetermineStrategy() {
 }
 
 function checkStat2x() {
-    log("Games without 2x: " + gamesWithout2x + ". Betting when no 2x since: " + gamesNeededFor2x + ".");
+    log("Games without 2x: " + gamesWithout2x + ". Betting when no 2x since: " + gamesNeededFor2x + " games.");
     if (gamesWithout2x > gamesNeededFor2x //If we're safe to begin martingale 
         //|| currentMedian < 1.6
         ) {
@@ -168,7 +168,7 @@ function checkStat2x() {
 }
 
 function checkStat10x() {
-    log("gamesWithout10x: " + gamesWithout10x + ". Betting when no 10x since: " + gamesNeededFor10x + ".");
+    log("gamesWithout10x: " + gamesWithout10x + ". Betting when no 10x since: " + gamesNeededFor10x + " games.");
     if (gamesWithout10x > gamesNeededFor10x) //If there is less that 1/13 game that is 10x
     {
         return true;
