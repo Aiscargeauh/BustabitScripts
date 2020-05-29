@@ -8,6 +8,7 @@ This repository is opened to pull-requests. You can also report bugs in the scri
 I'm also opened to new strategies / ideas, contact me on bustabit directly (@Cannonball) or via mail (aiscargeauh@protonmail.ch) if you want to get in touch.
 
 I strongly advise you to test the scripts on https://mtihc.github.io/bustabit-script-simulator/ before using them. So you can understand the script and the risks before actually using it.
+However, most of the scripts use "engine.history.toArray()" function which won't work on the simulator. If you want to try on the simulator, replace all "engine.history.toArray()" by 0. It will work the same.
 
 ## Strategies explanation
 
@@ -17,6 +18,7 @@ Well, it's a template, if you want to do scripts
 ### MultiStrats
 Trying to make a mix in 10x and 2x, betting when you're "safe to bet".
 This script doesn't bet a lot unless you have a bankroll big enough.
+/!\Under development, not stable.
 
 ### 10x Chasing
 In this script you can set the number of games that you want to wait before chasing the x10. Once this number of games is reached, it will bet the 'base bet' value that you sen when starting the script and double the bet when needed, to stay in profit.
