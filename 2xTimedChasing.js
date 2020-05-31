@@ -62,7 +62,7 @@ engine.on('GAME_STARTING', function () {
         isBettingNow = false;
         let calculatedGamesToWait = config.redStreakToWait.value - currentRedStreak;
         if (calculatedGamesToWait < 1) {
-            log('Betting ' + config.baseBet.value / 100 + 'bit(s) next game (if this one is red)!');
+            log('Will begin to bet shortly');
         } else {
             log('Waiting for ' + calculatedGamesToWait + ' more games with no 2x');
         }
