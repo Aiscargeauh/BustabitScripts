@@ -33,6 +33,10 @@ Same as 10x Chasing, but for the first version of bustabit.
 This script will chase the x2 multiplier.
 It will begin to bet only after the number of red games that you input. After that, it will begin a martingale until there is a green game.
 
+### 2x Timed Chasing
+Little changes to the original 2x Chasing. Betting for X minutes after a streak has been seen.
+Please note it needs a green game to understand there has been such streak.
+
 ### Reverse Martingale
 The idea of this script is to bet more after a won game, and return to base bet when you lost a game.
 In order to make profit, you can set a limit of won games, to go back to the base bet after a won game. 

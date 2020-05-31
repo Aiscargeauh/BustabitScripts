@@ -24,6 +24,7 @@ var isBettingNow = false;
 var gamesToBeSafy = 25;
 var minutesLeft = 0;
 var startingStreakDate = null;
+var redStreakOverLimit = null;
 
 log('FIRST LAUNCH | WELCOME!');
 log('Bot safety check :');
@@ -42,17 +43,17 @@ engine.on('GAME_STARTING', function () {
     log('NEW GAME')
     log('Games since no 2x: ' + currentRedStreak + '. You can handle: ' + gamesTheBotCanHandle + ' games without 2x.');
     log('Actual profit using the script: ' + userProfitInSatoshis / 100 + ' bits. Got ' + numberOf2xCashedOut + ' times 2x.');
-    if (currentRedStreak >= config.redStreakToWait.value || minutesLeft > 0) {
+    if (redStreakOverLimit || minutesLeft > 0) {
         //do place bet
         let nowDate = Date.now();
         registerDate(nowDate);
         updateMinutesLeft(nowDate);
         if(minutesLeft > 0){
-            log('Will continue to bet for the next ' + minutesLeft + ' minutes.')
+            log('Will continue to bet for the next ' + minutesLeft + ' minutes.');
             engine.bet(currentBetInSatoshis, 2);
             let currentBetInBits = currentBetInSatoshis / 100;
             let wantedProfit = currentBetInBits + (userProfitInSatoshis / 100);
-            log('Betting ' + currentBetInBits + ' right now, looking for ' + wantedProfit + ' bits total profit.')
+            log('Betting ' + currentBetInBits + ' right now, looking for ' + wantedProfit + ' bits total profit.');
             isBettingNow = true;
         }else{
             isBettingNow = false;
@@ -60,7 +61,7 @@ engine.on('GAME_STARTING', function () {
     } else {
         isBettingNow = false;
         let calculatedGamesToWait = config.redStreakToWait.value - currentRedStreak;
-        if (calculatedGamesToWait <= 1) {
+        if (calculatedGamesToWait < 1) {
             log('Betting ' + config.baseBet.value / 100 + 'bit(s) next game (if this one is red)!');
         } else {
             log('Waiting for ' + calculatedGamesToWait + ' more games with no 2x');
@@ -81,6 +82,10 @@ engine.on('GAME_ENDED', function () {
         }
     }
     if (gameInfos.bust > 2) {
+        redStreakOverLimit = false;
+        if(currentRedStreak >= config.redStreakToWait.value){
+            redStreakOverLimit = true;
+        }
         currentRedStreak = 0;
     } else {
         currentRedStreak++;
