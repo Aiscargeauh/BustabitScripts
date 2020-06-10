@@ -34,7 +34,7 @@ This script will chase the x2 multiplier.
 It will begin to bet only after the number of red games that you input. After that, it will begin a martingale until there is a green game.
 
 ### 2x Timed Chasing
-Little changes to the original 2x Chasing. Betting for X minutes after a streak has been seen.
+Little changes to the original 2x Chasing. Betting for X minutes or X games after a streak has been seen.
 Please note it needs a green game to understand there has been such streak.
 
 ### Reverse Martingale
@@ -52,3 +52,15 @@ Bustabit chart: https://prnt.sc/r2ust3.
 That's a custom made script. Basically a martingale, but with a lot of parameters.
 There is a nice interface for you to adjust your betting strategy.
 You can use it to chase any multiplier.
+
+### Bouncy3x
+Custom script. Constantly chasing 3x, unless it is in cooldown, which you can set as parameter of the script.
+It will bet two times using the base bet that you enter, then makes an addition with the two last bet that you did.
+For example:
+Game 1 bet 15 bits
+Game 2 bet 15 bits
+Game 3 bet 30 bits
+Game 4 bet 45 bits
+Game 5 bet 75 bits
+Game 6 bet 120 bits
+And so on, until 3x.
