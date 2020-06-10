@@ -51,6 +51,7 @@ engine.on('GAME_ENDED', function () {
             userProfit += currentBet*3;
             cooldown = config.gamesToWait.value;
             currentStreakBets = [];
+            currentBet = config.baseBet.value;
             numberOf3xCashedOut++;
         }
     }else{
