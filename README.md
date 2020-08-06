@@ -55,6 +55,7 @@ You can use it to chase any multiplier.
 
 ### Bouncy3x
 Custom script. Constantly chasing 3x, unless it is in cooldown, which you can set as parameter of the script.
+Cooldown can be fixed or random between two values. For random cooldown, please input "min-max" with the dash "-" (for example 3-7 will give a number between 3 and 7) or it will crash the script.
 It will bet two times using the base bet that you enter, then makes an addition with the two last bet that you did.
 For example:
 Game 1 bet 15 bits
