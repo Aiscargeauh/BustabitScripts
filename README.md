@@ -62,4 +62,4 @@ Game 6 bet 120 bits
 And so on, until 3x.
 
 ### KultorKnight
-Custom script (@Kultor). Modification of the OnTheMoon script, with the automatic bet adjustment of the 10xChasing script.
+Custom script (@Kultor). Modification of the OnTheMoon script, with the automatic bet adjustment of the 10xChasing script. You can still choose to multiply or add to the base bet, but it will be applied first when the number of games is equal to the chased multiplier, then every multiplier/2 games.
