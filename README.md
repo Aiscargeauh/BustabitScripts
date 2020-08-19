@@ -15,11 +15,6 @@ However, most of the scripts use "engine.history.toArray()" function which won't
 ### Template
 Well, it's a template, if you want to do scripts
 
-### MultiStrats
-Trying to make a mix in 10x and 2x, betting when you're "safe to bet".
-This script doesn't bet a lot unless you have a bankroll big enough.
-/!\Under development, not stable.
-
 ### 10x Chasing
 In this script you can set the number of games that you want to wait before chasing the x10. Once this number of games is reached, it will bet the 'base bet' value that you sen when starting the script and double the bet when needed, to stay in profit.
 
@@ -65,3 +60,6 @@ Game 4 bet 45 bits
 Game 5 bet 75 bits
 Game 6 bet 120 bits
 And so on, until 3x.
+
+### KultorKnight
+Custom script (@Kultor). Modification of the OnTheMoon script, with the automatic bet adjustment of the 10xChasing script.
