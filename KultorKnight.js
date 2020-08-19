@@ -86,10 +86,8 @@ engine.on('GAME_ENDED', function () {
             bettedGames++;
 
             //If it's time to change baseBet
-            log("bettedGames: " + bettedGames);
             if (bettedGames == multiplier - 1 || (bettedGames > multiplier && (bettedGames % multiplier == 0 || bettedGames % multiplier == multiplier / 2))) {
                 //Add or multiply value (both at the same time possible)
-                log("add or multiply baseBet");
                 if (multiplyValue != undefined) {
                     baseBet *= multiplyValue;
                 }
