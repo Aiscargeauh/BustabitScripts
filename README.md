@@ -4,8 +4,8 @@
 I (@Cannonball) am not responsible for any loss that could happen using one of the above scripts. Please use them with your own responsibility.
 
 ### Informations
-This repository is opened to pull-requests. You can also report bugs in the scripts.
-I'm also opened to new strategies / ideas, contact me on bustabit directly (@Cannonball) or via mail (aiscargeauh@protonmail.ch) if you want to get in touch.
+Feel free to open an issue (https://github.com/Ncw007/BustabitScripts/issues) to ask for new scripts or report bugs.
+You can also fork this repository, add your script then create a pull-request to add your script to the list.
 
 I strongly advise you to test the scripts on https://mtihc.github.io/bustabit-script-simulator/ before using them. So you can understand the script and the risks before actually using it.
 However, most of the scripts use "engine.history.toArray()" function which won't work on the simulator. If you want to try on the simulator, replace all "engine.history.toArray()" by 0. It will work the same.
