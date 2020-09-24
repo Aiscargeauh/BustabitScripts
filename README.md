@@ -4,8 +4,8 @@
 I (@Cannonball) am not responsible for any loss that could happen using one of the above scripts. Please use them with your own responsibility.
 
 ### Informations
-This repository is opened to pull-requests. You can also report bugs in the scripts.
-I'm also opened to new strategies / ideas, contact me on bustabit directly (@Cannonball) or via mail (aiscargeauh@protonmail.ch) if you want to get in touch.
+Feel free to open an issue (https://github.com/Ncw007/BustabitScripts/issues) to ask for new scripts or report bugs.
+You can also fork this repository, add your script then create a pull-request to add your script to the list.
 
 I strongly advise you to test the scripts on https://mtihc.github.io/bustabit-script-simulator/ before using them. So you can understand the script and the risks before actually using it.
 However, most of the scripts use "engine.history.toArray()" function which won't work on the simulator. If you want to try on the simulator, replace all "engine.history.toArray()" by 0. It will work the same.
@@ -60,3 +60,10 @@ Game 4 bet 45 bits
 Game 5 bet 75 bits
 Game 6 bet 120 bits
 And so on, until 3x.
+
+### Bouncy3xEnhanced
+Custom script, modification of the Bouncy3x.
+Instead of red streak, it is < 3 streak. It also stops when a 3x is taken and will restart the betting scheme to not go over the new "max bet" parameter.
+
+### KultorKnight
+Custom script (@Kultor). Modification of the OnTheMoon script, with the automatic bet adjustment of the 10xChasing script. You can still choose to multiply or add to the base bet, but it will be applied first when the number of games is equal to the chased multiplier, then every multiplier/2 games.
